@@ -1,7 +1,59 @@
-var builder = WebApplication.CreateBuilder(args);
+using FirstMvcProject.Application.ExtentionFunctions;
+using FirstMvcProject.Application.Services.AccountServices;
+using FirstMvcProject.Application.Services.ProductServices;
+using FirstMvcProject.Domain.Entities;
+using FirstMvcProject.Infrastructure.Data;
+using FirstMvcProject.Infrastructure.Repositories.AuditRepo;
+using FirstMvcProject.Infrastructure.Repositories.ProductRepo;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
-// Add services to the container.
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddSingleton<VatCalculator>();
+
+//Add services to the container.
+//Repositories
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IAuditRepository, AuditRepository>();
+
+
+//Services
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
+
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
 builder.Services.AddControllersWithViews();
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "TeamProjectMVC API",
+        Version = "v1"
+    });
+});
+builder.Services.AddHttpClient();
+
+builder.Services.AddIdentity<User, Role>(options =>
+{
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 6;
+})
+    .AddEntityFrameworkStores<AppDbContext>();
+
+
+
+
+
 
 var app = builder.Build();
 
@@ -17,11 +69,14 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Account}/{action=Index}/{id?}");
 
 app.Run();
