@@ -7,7 +7,7 @@ This project is built on Windows 11 OS.
 
 ## Getting started
 1. Cloning the repository
-   ``https://github.com/BoburTurgunboyev/app.git``
+   ``https://github.com/BoburTurgunboyev/MVC.git``
 
 2. Navigate to the project folder:
 
