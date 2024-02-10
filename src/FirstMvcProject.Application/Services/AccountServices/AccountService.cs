@@ -23,10 +23,6 @@ namespace FirstMvcProject.Application.Services.AccountServices
 
         public async ValueTask<bool> Login(LoginDto loginDto)
         {
-
-            
-                
-
                 try
                 {
                     var user = _userManager.Users.FirstOrDefault(x => x.Email == loginDto.Email);
@@ -42,8 +38,6 @@ namespace FirstMvcProject.Application.Services.AccountServices
                 {
                     return false;
                 }
-           
-
         }
 
         public async ValueTask<bool> Registor(RegistorDto registorDto)
@@ -58,6 +52,7 @@ namespace FirstMvcProject.Application.Services.AccountServices
             {
                 UserName = registorDto.Name,
                 Email = registorDto.Email,
+                
 
             };
             var result = await _userManager.CreateAsync(user, registorDto.Password);
