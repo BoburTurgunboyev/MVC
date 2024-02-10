@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FirstMvcProject.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240209063559_Initial")]
+    [Migration("20240210065829_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -46,6 +46,22 @@ namespace FirstMvcProject.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Price = 10.99,
+                            Quantiy = 10,
+                            Title = "Product 1"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Price = 20.989999999999998,
+                            Quantiy = 10,
+                            Title = "Product 2"
+                        });
                 });
 
             modelBuilder.Entity("FirstMvcProject.Domain.Entities.ProductAudit", b =>

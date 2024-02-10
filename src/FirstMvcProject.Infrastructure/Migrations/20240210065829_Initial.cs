@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace FirstMvcProject.Infrastructure.Migrations
 {
     /// <inheritdoc />
@@ -187,6 +189,15 @@ namespace FirstMvcProject.Infrastructure.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "Id", "Price", "Quantiy", "Title" },
+                values: new object[,]
+                {
+                    { 1, 10.99, 10, "Product 1" },
+                    { 2, 20.989999999999998, 10, "Product 2" }
                 });
 
             migrationBuilder.CreateIndex(
